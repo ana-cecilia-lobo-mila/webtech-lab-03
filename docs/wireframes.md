@@ -1,22 +1,15 @@
 ## Counter
-Esta vista permite ver la informacion general de cada bici, su id, fotos, información de propietario, algunos detalles pertinentes e historial de reparaciones (Al dar click allí lleva a la vista "bikes").
+This view displays general information about each bike—such as its ID, photos, owner details, relevant specifics, and repair history—and clicking on it leads to the "bikes" view.
 [![Counter wireframe](wireframe-counter-view.png)](wireframe-counter-view.png)
 
-
 ## Mechanic
-Esta vista permite ver un desglose de toda la informacion de las bicis, los trabajos anteriores, historial de dueños.
-wireframe-bike-view
+This view allows you to see a breakdown of all bike information, past work, and ownership history.
 [![Mechanic wireframe](wireframe-bike-view.png)](wireframe-bike-view.png)
 
-
 ## Costumer
-Esta vista permite ver el listado de los trabajos con sus precios
+This view allows you to see the list of jobs along with their prices.
 [![Costumer wireframe](wireframe-costumer-view.png)](wireframe-costumer-view.png)
 
 ## Owner
-Esta vista permite ver los deadlines de los siguientes trabajos
+This view allows you to see the deadlines for the following tasks.
 [![Owner wireframe](wireframe-owner-view.png)](wireframe-owner-view.png)
-
-
-
-
