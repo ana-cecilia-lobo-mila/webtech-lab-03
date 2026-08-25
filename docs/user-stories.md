@@ -1,4 +1,4 @@
-##Customer
+## Customer
 1. As a customer, I want to review the estimated cost of the repair, so that I can approve or reject the proposed work. 
 
 2. As a customer, I want to view the available services and their prices on the website, so that I do not have to call the shop to ask about prices.
@@ -8,7 +8,7 @@ Acceptance criteria
 -When there are no services available, the website displays a message indicating that there are no services available.
 
 
-##Counter manager
+## Counter manager
 3. As a counter manager, I want to register a customer, so that I can have their information available when needed.
 
 4. As a counter manager, I want to register a bicycle with its identifying information, so that I can correctly identify it throughout the repair.
@@ -25,7 +25,7 @@ Acceptance Criteria
 
 8. As a counter manager, I want to record a bicycle's ownership history, so that the repair history remains associated with the bicycle when it changes owners.
 
-##Mechanic 
+## Mechanic 
 9. As a mechanic, I want to take photos of a bicycle when it arrives, so that there is evidence of its condition before the repair.
 
 10. As a mechanic, I want to inspect a bicycle, so that I can identify its problems and determine what work it needs.
@@ -40,7 +40,7 @@ Acceptance criteria
 -Each previous repair displays the work that was performed on the bicycle.
 -When the bicycle has no previous repairs, the screen displays a message indicating that there is no repair history available.
 
-##Owner
+## Owner
 14. As an administrator, I want to update the prices of available services, so that the current price list is accurate.
 
 15. As an administrator, I want to view the history of service prices, so that I can keep track of how prices have changed over time.

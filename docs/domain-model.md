@@ -1,7 +1,7 @@
-##Image
+## Image
 [![Domain model](domain-model.png)](domain-model.png)
 
-##Code
+## Code
 ```
 Table Customer {
   id int [pk]
@@ -71,10 +71,11 @@ Table Bill {
   id_repair int [pk, ref: > Repair.id_repair]
   id_service int [pk, ref: > Service.id_service]
   final_price decimal(10,2)
-}´´´
+} 
+```
 
 
-##Lifecycle
+## Lifecycle
 - Status:
     Received
     Diagnosing
@@ -99,7 +100,7 @@ Table Bill {
     Rejected → In repair
     And none that comes before itself
 
-## Table entity-story
+## Table
 | Entity | User story that requires it |
 | Customer | 3 |
 | Mechanic | 12 |
@@ -113,11 +114,11 @@ Table Bill {
 | Repair_service | 1, 7 |
 
 
-##The thing and the copy of the thing
+## The thing and the copy of the thing
 Each bicycle is represented as a separate entity with its own id_bike and serial_number, even when two bicycles have the same brand, model, and color. 
 The Customer_bike table records which customer owns each bicycle and the period of ownership, while repairs are associated directly with the bicycle through id_bike. 
 This prevents the mix-up described by the owner because two similar bicycles can still be uniquely identified and their repair histories remain attached to the correct bicycle. 
 A single table with a quantity column would only tell us that there are, for example, two blue Trek Marlins, but it could not tell us which specific bicycle has a particular serial number, who owns it, or which repair history belongs to each bicycle.
 
-##Derived, or stored? 
+## Derived, or stored? 
 The total cost of a repair is deliberately not stored as a separate column because it can be derived by adding the final_price values of the services associated with that repair through Repair_service. In contrast, final_price is stored even though it may appear derivable from the service price, because the shop sometimes charges less than the standard price. If final_price were not stored, changing the standard price in the future would make it impossible to know how much the customer was actually charged for an old repair.
