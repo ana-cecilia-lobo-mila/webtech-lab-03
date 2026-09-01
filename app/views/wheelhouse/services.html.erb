@@ -1,0 +1,19 @@
+<div class="container mt-5">
+  <h1>Our Services</h1>
+  <p class="lead">This is our public price list. All work is performed using the best tools on the market.</p>
+
+  <div class="row mt-4">
+    <% @services.each do |service| %>
+      <div class="col-12 col-md-4 mb-4">
+        <div class="card h-100 shadow-sm border-0 bg-light">
+          <div class="card-body">
+            <h5 class="card-title"><%= service[:name] %></h5>
+            <p class="card-text fw-bold text-primary fs-5">
+              <%= number_to_currency(service[:price], precision: 0, delimiter: '.', unit: '$') %>
+            </p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
