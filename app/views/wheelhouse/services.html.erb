@@ -1,15 +1,19 @@
 <div class="container mt-5">
-  <h1>Our Services</h1>
-  <p class="lead">This is our public price list. All work is performed using the best tools on the market.</p>
+  <h1 class="mb-2" style="font-weight: 300; color: #18848e;">Our Services</h1>
+  <p class="lead text-muted border-bottom pb-4 mb-4">
+    This is our public price list. All work is performed using the best tools on the market.
+  </p>
 
-  <div class="row mt-4">
+  <div class="row">
     <% @services.each do |service| %>
       <div class="col-12 col-md-4 mb-4">
-        <div class="card h-100 shadow-sm border-0 bg-light">
-          <div class="card-body">
-            <h5 class="card-title"><%= service[:name] %></h5>
-            <p class="card-text fw-bold text-primary fs-5">
-              <%= number_to_currency(service[:price], precision: 0, delimiter: '.', unit: '$') %>
+        <div class="card h-100 shadow-sm" style="border: none; border-top: 3px solid #1a98a6; border-radius: 8px; background-color: #ffffff;">
+          <div class="card-body d-flex flex-column justify-content-between p-4">
+            <h5 class="card-title" style="color: #333; font-weight: 500;">
+              <%= service.name %>
+            </h5>
+            <p class="card-text fw-bold fs-4 mt-3 mb-0" style="color: #18848e;">
+              <%= number_to_currency(service.price, precision: 0, delimiter: '.', unit: '$') %>
             </p>
           </div>
         </div>

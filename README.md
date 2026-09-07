@@ -41,3 +41,18 @@ psql --version
 node --version
 yarn --version
 git --version
+
+
+## Setup
+To get the application running from a fresh clone, run the following command:
+`
+bundle install
+bin/rails db:setup
+bin/dev
+`
+
+Then open:
+- http://localhost:3000/
+- http://localhost:3000/services
+
+The `db:setup` command creates the database, loads the schema, and seeds the sample data for the price list.

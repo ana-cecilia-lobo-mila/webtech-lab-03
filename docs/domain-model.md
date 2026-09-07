@@ -1,104 +1,98 @@
 ## Image
 [![Domain model](domain-model.png)](domain-model.png)
 
-## Code
-```
-Table Customer {
-  id int [pk]
-  name varchar
+## New code
+```dbml
+Table customers {
+  id bigint [pk, increment]
+  name varchar [not null]
   phone varchar
+  created_at datetime [not null]
+  updated_at datetime [not null]
 }
 
-Table Mechanic {
-  id_mechanic int [pk]
-  name varchar
+Table mechanics {
+  id bigint [pk, increment]
+  name varchar [not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
 }
 
-Table Bike {
-  id_bike int [pk]
+Table services {
+  id bigint [pk, increment]
+  name varchar [not null, unique]
+  price decimal(8,2) [not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+}
+
+Table bikes {
+  id bigint [pk, increment]
+  customer_id bigint [not null]
   brand varchar
   model varchar
   color varchar
-  serial_number varchar
+  serial_number varchar [unique]
+  created_at datetime [not null]
+  updated_at datetime [not null]
 }
 
-Table Customer_bike {
-  id_customer int [pk, ref: > Customer.id]
-  id_bike int [pk, ref: > Bike.id_bike]
-  owned_from date
-  owned_to date
+Table repairs {
+  id bigint [pk, increment]
+  bike_id bigint [not null]
+  mechanic_id bigint [null]
+  started_on date
+  promised_on date [not null]
+  handed_back_at datetime
+  state varchar [not null, default: 'received']
+  created_at datetime [not null]
+  updated_at datetime [not null]
 }
 
-Table Repair {
-  id_repair int [pk]
-  id_bike int [not null, ref: > Bike.id_bike]
-  id_mechanic int [not null, ref: > Mechanic.id_mechanic]
-  start_date date
-  promised_date date
-  status varchar
+Table repair_services {
+  id bigint [pk, increment]
+  repair_id bigint [not null]
+  service_id bigint [not null]
+  charged_price decimal(8,2) [not null]
+  created_at datetime [not null]
+  updated_at datetime [not null]
 }
-
-Table Note {
-  id_note int [pk]
-  id_repair int [not null, ref: > Repair.id_repair]
-  id_mechanic int [not null, ref: > Mechanic.id_mechanic]
-  content text
-  date date
-}
-
-Table Photo {
-  id_photo int [pk]
-  id_repair int [not null, ref: > Repair.id_repair]
-  image varchar
-  date date
-}
-
-Table Service {
-  id_service int [pk]
-  name varchar(100)
-  description text
-}
-
-Table Service_price {
-  id_price int [pk]
-  id_service int [not null, ref: > Service.id_service]
-  price decimal(10,2)
-  valid_from date
-  valid_to date
-}
-
-Table Bill {
-  id_repair int [pk, ref: > Repair.id_repair]
-  id_service int [pk, ref: > Service.id_service]
-  final_price decimal(10,2)
-} 
 ```
 
+## Changes since Lab 3
+* Removed `Photo` and `Note` tables: The lab rules state these arrive in Lab 9.
+* Renamed Primary Keys to `id`: Adopted Rails conventions.
+* Renamed Foreign Keys: Added `_id` suffix (e.g., `bike_id`, `mechanic_id`) following Rails conventions.
+* Removed `Customer_bike` table: Added `customer_id` directly to `bikes` to enforce that a bike cannot exist without an owner.
+* Removed `Service_price` table: Moved `price` directly to the `services` table to enforce that a service must have a price.
+* Renamed `status` to `state` in `repairs` and added a default value of "received".
+* Renamed date columns: Changed `start_date` to `started_on` and `promised_date` to `promised_on` following Rails conventions for dates.
+* Allowed NULL for `mechanic_id` in `repairs`: A mechanic is not known when the repair first arrives.
 
 ## Lifecycle
-- Status:
-    Received
-    Diagnosing
-    Waiting for approval
-    Approved
-    Rejected
-    In repair
-    Ready
-    Picked up
+- States:
+  - received
+  - diagnosing
+  - waiting_for_approval
+  - approved
+  - rejected
+  - in_repair
+  - ready
+  - picked_up
 
 - Allowed transitions
-    Received → Diagnosing
-    Diagnosing → Waiting for approval
-    Waiting for approval → Approved
-    Waiting for approval → Rejected
-    Approved → In repair
-    In repair → Ready
-    Ready → Picked up
-    Rejected → Picked up
+  - received → diagnosing
+  - diagnosing → waiting_for_approval
+  - waiting_for_approval → approved
+  - waiting_for_approval → rejected
+  - approved → in_repair
+  - in_repair → ready
+  - ready → picked_up
+  - rejected → picked_up
 
 - Not allowed transitions
-    Rejected → In repair
-    And none that comes before itself
+  - rejected → in_repair
+  - any transition that repeats the same state
 
 ## Table
 | Entity | User story that requires it |
