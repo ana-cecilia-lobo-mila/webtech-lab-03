@@ -1,2 +1,142 @@
+$primary: #2f6f6d;
+$secondary: #6c757d;
+$light: #f5f1e8;
+$dark: #243333;
+
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
+
+
+body {
+    background-color: #faf8f3;
+    color: $dark;
+}
+
+.wheelhouse-navbar {
+    background-color: $primary;
+    padding: 0.8rem 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.wheelhouse-navbar .navbar-brand {
+    color: $light;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.wheelhouse-navbar .nav-link {
+    color: $light;
+    margin-left: 0.4rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.wheelhouse-navbar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+}
+
+.wheelhouse-navbar .nav-link.active {
+    background-color: $light;
+    color: $primary;
+    font-weight: 600;
+}
+
+
+
+.wheelhouse-title {
+    color: $dark;
+    font-weight: 700;
+}
+
+.wheelhouse-subtitle {
+    color: $secondary;
+}
+
+
+.wheelhouse-table {
+    background-color: white;
+    border-radius: 0.8rem;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(36, 51, 51, 0.06);
+}
+
+.wheelhouse-table thead {
+    background-color: $primary;
+    color: #ffffff;
+}
+
+.wheelhouse-table thead th {
+        border: none;
+        font-weight: 600;
+}
+
+.wheelhouse-table tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+.wheelhouse-table tbody tr:hover {
+    background-color: rgba(47, 111, 109, 0.06);
+}
+
+.wheelhouse-table a {
+    color: $primary;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.wheelhouse-table a:hover {
+    text-decoration: underline;
+}
+
+
+.wheelhouse-btn {
+    color: white;
+    border-radius: 0.6rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.wheelhouse-btn:hover {
+    transform: translateY(-1px);
+}
+
+
+
+.wheelhouse-link {
+    color: $primary;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.wheelhouse-link:hover {
+    color: darken($primary, 10%);
+    text-decoration: underline;
+}
+
+
+.wheelhouse-overdue {
+  color: #a33a3a;
+  font-weight: 700;
+}
+
+
+.wheelhouse-total {
+  color: $primary;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.wheelhouse-empty {
+  border: none;
+  border-radius: 0.8rem;
+  background-color: rgba(47, 111, 109, 0.08);
+  color: $dark;
+}
+
+a,
+button,
+.nav-link,
+.wheelhouse-table tbody tr {
+  transition: all 0.2s ease;
+}

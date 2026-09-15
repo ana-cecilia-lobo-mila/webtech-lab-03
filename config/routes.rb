@@ -7,9 +7,15 @@ Rails.application.routes.draw do
 
   root "wheelhouse#home"
 
-  get "/services", to: "wheelhouse#services", as: :services
+  #get "/services", to: "wheelhouse#services", as: :services
   get "/workshop", to: "wheelhouse#workshop", as: :workshop
   get "/about", to: "wheelhouse#about", as: :about
+
+  resources :customers, only: [:index, :show]
+  resources :bikes, only: [:index, :show]
+  resources :repairs, only: [:index, :show]
+  resources :services, only: [:index, :show]
+  resources :mechanics, only: [:index, :show]
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest

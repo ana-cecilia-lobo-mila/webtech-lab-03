@@ -1,0 +1,14 @@
+<tr>
+  <td>
+    <%= link_to bike.brand.presence || "Unknown", bike_path(bike) %>
+  </td>
+  <td>
+    <%= bike.model.presence || "Unknown" %>
+  </td>
+  <td>
+    <%= bike.color.presence || "Unknown" %>
+  </td>
+  <td>
+    <%= link_to bike.customer.name, customer_path(bike.customer) %>
+  </td>
+</tr>

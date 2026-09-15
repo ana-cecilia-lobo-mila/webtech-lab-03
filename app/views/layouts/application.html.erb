@@ -24,22 +24,32 @@
   </head>
 
   <body>
-
-    <nav class="navbar navbar-expand-lg bg-light">
+    <nav class="navbar navbar-expand-lg wheelhouse-navbar">
       <div class="container">
-        <%= link_to "Wheelhouse", root_path, class: "navbar-brand fw-bold text-primary" %>
-        
+        <%= link_to "Wheelhouse", root_path, class: "navbar-brand fw-bold text-primary text-white" %>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        
+
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
               <%= link_to "Home", root_path, class: "nav-link #{'active' if current_page?(root_path)}" %>
             </li>
             <li class="nav-item">
-              <%= link_to "Services", services_path, class: "nav-link #{'active' if current_page?(services_path)}" %>
+              <%= link_to "Customers", customers_path, class: "nav-link #{'active' if controller_name == 'customers'}" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Bikes", bikes_path, class: "nav-link #{'active' if controller_name == 'bikes'}" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Repairs", repairs_path, class: "nav-link #{'active' if controller_name == 'repairs'}" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Services", services_path, class: "nav-link #{'active' if controller_name == 'services'}" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Mechanics", mechanics_path, class: "nav-link #{'active' if controller_name == 'mechanics'}" %>
             </li>
             <li class="nav-item">
               <%= link_to "Workshop", workshop_path, class: "nav-link #{'active' if current_page?(workshop_path)}" %>

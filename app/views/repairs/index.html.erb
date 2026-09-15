@@ -1,0 +1,47 @@
+<div class="container mt-5">
+  <h1 class="mb-4 wheelhouse-title">Repairs</h1>
+
+  <% if @repairs.any? %>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover wheelhouse-table">
+        <thead>
+          <tr>
+            <th>Bike</th>
+            <th>Mechanic</th>
+            <th>Promised on</th>
+            <th>State</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @repairs.each do |repair| %>
+            <tr>
+                <td>
+                    <%= link_to [repair.bike.brand, repair.bike.model].compact.join(" "),bike_path(repair.bike) %>
+                </td>
+
+                <td>
+                    <%= repair.mechanic&.name || "Not assigned" %>
+                </td>
+
+                <td>
+                    <%= repair.promised_on.strftime("%d/%m/%Y") %>
+                </td>
+
+                <td>
+                    <%= repair.state.humanize %>
+                </td>
+
+                <td>
+                    <%= link_to "View", repair_path(repair), class: "btn btn-primary wheelhouse-btn btn-sm" %>
+                </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <% else %>
+        <div class="alert alert-info wheelhouse-empty">No repairs found.</div>
+    <% end %>
+</div>
