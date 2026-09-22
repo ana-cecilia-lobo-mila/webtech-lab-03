@@ -25,7 +25,7 @@ Before setting up Wheelhouse, make sure the following software is installed:
 * **Windows 10/11**
 * **WSL2**
 * **Ubuntu** on WSL2
-* **Ruby 4.0.4**
+* **Ruby 3.3.8**
 * **Rails 8.1.3.1**
 * **PostgreSQL**
 - **Node.js 26.8.1**
@@ -67,7 +67,7 @@ bin/rails db:setup
 Start the Rails server:
 
 ```bash
-bin/rails server
+bin/dev
 ```
 
 Then open:

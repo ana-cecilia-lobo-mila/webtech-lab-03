@@ -3,13 +3,13 @@
 
   <div class="card mb-4">
     <div class="card-body">
-      <p><strong>Bike:</strong><%= link_to [@repair.bike.brand, @repair.bike.model].compact.join(" "),bike_path(@repair.bike) %></p>
+      <p><strong>Bike:</strong><%= link_to [@repair.bike.brand, @repair.bike.model].compact.join(" "), bike_path(@repair.bike) %></p>
 
       <p><strong>Mechanic:</strong><%= @repair.mechanic&.name || "Not assigned" %></p>
 
       <p><strong>Started on:</strong><%= @repair.started_on&.strftime("%d/%m/%Y") || "Not started" %></p>
 
-      <p class="<%= 'text-danger fw-bold' if @repair.promised_on < Date.current && @repair.handed_back_at.nil? %>"><strong>Promised on:</strong><%= @repair.promised_on.strftime("%d/%m/%Y") %><% if @repair.promised_on < Date.current && @repair.handed_back_at.nil? %><span class="badge bg-danger wheelhouse-overdue">Overdue</span><% end %></p>
+      <p class="<%= 'text-danger fw-bold' if @repair.overdue? %>"><strong>Promised on:</strong><%= @repair.promised_on.strftime("%d/%m/%Y") %><% if @repair.overdue? %><span class="badge bg-danger wheelhouse-overdue">Overdue</span><% end %></p>
 
       <p><strong>State:</strong><%= @repair.state.humanize %></p>
 
@@ -33,7 +33,7 @@
           <% @repair.repair_services.each do |repair_service| %>
             <tr>
               <td>
-                <%= link_to repair_service.service.name,service_path(repair_service.service) %>
+                <%= link_to repair_service.service.name, service_path(repair_service.service) %>
               </td>
               <td>
                 $<%= number_with_delimiter(repair_service.charged_price) %>
@@ -44,7 +44,8 @@
       </table>
     </div>
 
-  <p class="text-end wheelhouse-total"><strong>Total: $<%= number_with_delimiter(@repair.repair_services.sum(&:charged_price)) %></strong></p>
+    <p class="text-end wheelhouse-total"><strong>Total: $<%= number_with_delimiter(@repair.total) %></strong></p>
+
   <% else %>
     <div class="alert alert-info wheelhouse-empty">No services have been added to this repair.</div>
   <% end %>

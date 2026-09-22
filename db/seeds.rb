@@ -87,9 +87,10 @@ RepairService.create!(repair_id: r2.id, service_id: s_wash.id, charged_price: s_
 
 # 3. Customer heard price and said no (rejected)
 r3 = Repair.create!(bike_id: b2_a.id, mechanic_id: m_mostrador.id, started_on: 1.day.ago, promised_on: 1.day.from_now, state: "rejected", handed_back_at: 1.day.ago + 2.hours)
+RepairService.create!(repair_id: r3.id, service_id: s_reg.id, charged_price: s_reg.price)
 
 # 4. Same bike, different repair (b1_a has repair r1 and r4)
-r4 = Repair.create!(bike_id: b1_a.id, mechanic_id: m3.id, started_on: 2.months.ago, promised_on: 2.months.ago + 2.days, state: "delivered", handed_back_at: 2.months.ago + 3.days)
+r4 = Repair.create!(bike_id: b1_a.id, mechanic_id: m3.id, started_on: 2.months.ago, promised_on: 2.months.ago + 2.days, state: "picked_up", handed_back_at: 2.months.ago + 3.days)
 RepairService.create!(repair_id: r4.id, service_id: s_wash.id, charged_price: s_wash.price)
 
 # 5. Old repair (before last Jan) with charged price below list price
@@ -98,6 +99,7 @@ RepairService.create!(repair_id: r5.id, service_id: s_maintenance.id, charged_pr
 
 # 6. Just received (No quote, no services yet)
 r6 = Repair.create!(bike_id: b4.id, mechanic_id: nil, started_on: Date.today, promised_on: 3.days.from_now, state: "received")
+RepairService.create!(repair_id: r6.id, service_id: s_maintenance.id, charged_price: s_maintenance.price)
 
 # 7. Quoted, waiting client response
 r7 = Repair.create!(bike_id: b8.id, mechanic_id: m3.id, started_on: 1.day.ago, promised_on: 2.days.from_now, state: "waiting_for_approval")
@@ -117,12 +119,13 @@ RepairService.create!(repair_id: r10.id, service_id: s_wash.id, charged_price: s
 
 # 11. Just received (No quote, no services yet)
 r11 = Repair.create!(bike_id: b3_a.id, mechanic_id: nil, started_on: Date.today, promised_on: 5.days.from_now, state: "received")
+RepairService.create!(repair_id: r11.id, service_id: s_wash.id, charged_price: s_wash.price)
 
-# 12. Quoted
-r12 = Repair.create!(bike_id: b9.id, mechanic_id: m1.id, started_on: 2.days.ago, promised_on: 1.day.from_now, state: "waiting_for_approval")
+# 12. Diagnosing
+r12 = Repair.create!(bike_id: b9.id, mechanic_id: m1.id, started_on: 2.days.ago,  promised_on: 1.day.from_now, state: "diagnosing")
 RepairService.create!(repair_id: r12.id, service_id: s_maintenance.id, charged_price: s_maintenance.price)
 
-# 13. Ready
+  # 13. Ready
 r13 = Repair.create!(bike_id: b8.id, mechanic_id: m2.id, started_on: 2.days.ago, promised_on: 2.days.from_now, state: "ready")
 RepairService.create!(repair_id: r13.id, service_id: s_wash.id, charged_price: s_wash.price)
 
@@ -130,7 +133,7 @@ RepairService.create!(repair_id: r13.id, service_id: s_wash.id, charged_price: s
 r14 = Repair.create!(bike_id: b2_b.id, mechanic_id: m3.id, started_on: 1.day.ago, promised_on: 3.days.from_now, state: "approved")
 RepairService.create!(repair_id: r14.id, service_id: s_reg.id, charged_price: s_reg.price)
 
-# 15. Delivered with 4 services (Testing max limit)
+# 15. picked_up with 4 services (Testing max limit)
 r15 = Repair.create!(bike_id: b6.id, mechanic_id: m1.id, started_on: 3.days.ago, promised_on: 1.day.ago, state: "picked_up", handed_back_at: 1.day.ago)
 RepairService.create!(repair_id: r15.id, service_id: s_wash.id, charged_price: s_wash.price)
 RepairService.create!(repair_id: r15.id, service_id: s_reg.id, charged_price: s_reg.price)
