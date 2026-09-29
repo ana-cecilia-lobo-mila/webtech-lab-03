@@ -61,6 +61,12 @@
         </div>
       </div>
     </nav>
+
+    <% flash.each do |type, message| %>
+    <div class="alert <%= type == "notice" ? "alert-success" : "alert-danger" %> alert-dismissible fade show m-3" role="alert">
+      <%= message %>
+    </div>
+  <% end %>
     <%= yield %>
   </body>
 </html>

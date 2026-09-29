@@ -91,7 +91,7 @@ body {
 
 
 .wheelhouse-btn {
-    color: white;
+    color: white !important;
     border-radius: 0.6rem;
     font-weight: 600;
     transition: all 0.2s ease;
@@ -132,6 +132,11 @@ body {
   border-radius: 0.8rem;
   background-color: rgba(47, 111, 109, 0.08);
   color: $dark;
+}
+
+.btn-secondary{
+    background-color: #6c757d;
+    color:#243333;
 }
 
 a,

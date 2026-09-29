@@ -4,6 +4,7 @@ class Repair < ApplicationRecord
 
     has_many :repair_services, dependent: :destroy
     has_many :services, through: :repair_services, dependent: :restrict_with_error
+    accepts_nested_attributes_for :repair_services, allow_destroy: true, reject_if: ->(attributes) { attributes["service_id"].blank? }
 
     enum :state, {
         received: "received",
@@ -82,7 +83,7 @@ class Repair < ApplicationRecord
         next_state = state.to_sym
 
 
-        if allowed_transitions[previous].blank? || !allowed_transitions[previous].include?(next_state)
+        if allowed_transitions[previous_state].blank? || !allowed_transitions[previous_state].include?(next_state)
             errors.add(:state, "is not a valid transition")
         end
     end

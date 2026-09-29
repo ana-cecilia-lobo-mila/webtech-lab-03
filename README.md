@@ -56,6 +56,7 @@ Install the dependencies:
 
 ```bash
 bundle install
+yarn install
 ```
 
 Create and prepare the database:

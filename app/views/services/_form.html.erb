@@ -1,0 +1,31 @@
+<%= form_with model: service do |form| %>
+  <% if service.errors.any? %>
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        <% service.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :name, class: "form-label" %>
+    <%= form.text_field :name, class: "form-control #{'is-invalid' if service.errors[:name].any?}" %>
+
+    <% service.errors.full_messages_for(:name).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :price, class: "form-label" %>
+    <%= form.number_field :price, step: 0.01,  min: 0.01, class: "form-control #{'is-invalid' if service.errors[:price].any?}" %>
+
+    <% service.errors.full_messages_for(:price).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
+
+  <%= form.submit class: "btn btn-secondary wheelhouse-btn" %>
+<% end %>

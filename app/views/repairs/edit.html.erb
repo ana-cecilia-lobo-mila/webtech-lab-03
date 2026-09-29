@@ -1,0 +1,9 @@
+<% content_for :title, "Edit Repair" %>
+
+<div class="container mt-5">
+  <h1 class="mb-4 wheelhouse-title">Edit Repair</h1>
+
+  <%= render "form", repair: @repair %>
+
+  <%= link_to "Back to repair", @repair, class: "btn btn-secondary wheelhouse-btn mt-3" %>
+</div>

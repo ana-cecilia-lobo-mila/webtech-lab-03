@@ -1,0 +1,64 @@
+<%= form_with model: bike do |form| %>
+  <% if bike.errors.any? %>
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        <% bike.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :serial_number, class: "form-label" %>
+    <%= form.text_field :serial_number,
+          class: "form-control #{'is-invalid' if bike.errors[:serial_number].any?}" %>
+    <% bike.errors.full_messages_for(:serial_number).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :brand, class: "form-label" %>
+    <%= form.text_field :brand, class: "form-control #{'is-invalid' if bike.errors[:brand].any?}" %>
+    <% bike.errors.full_messages_for(:brand).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :model, class: "form-label" %>
+    <%= form.text_field :model, class: "form-control #{'is-invalid' if bike.errors[:model].any?}" %>
+    <% bike.errors.full_messages_for(:model).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :color, class: "form-label" %>
+    <%= form.text_field :color, class: "form-control #{'is-invalid' if bike.errors[:color].any?}" %>
+    <% bike.errors.full_messages_for(:color).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :customer_id, "Customer", class: "form-label" %>
+    <%= form.collection_select :customer_id,
+          Customer.by_name,
+          :id,
+          :name,
+          { prompt: "Select a customer" },
+          { class: "form-select #{'is-invalid' if bike.errors[:customer].any? || bike.errors[:customer_id].any?}" } %>
+
+    <% bike.errors.full_messages_for(:customer).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+
+    <% bike.errors.full_messages_for(:customer_id).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
+
+  <%= form.submit class: "btn btn-primary wheelhouse-btn" %>
+<% end %>
