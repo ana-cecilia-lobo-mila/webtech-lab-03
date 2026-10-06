@@ -1,5 +1,5 @@
 <div class="container mt-5">
-  <h1 class="mb-4 wheelhouse-title">Repair<%= @repair.id %></h1>
+  <h1 class="mb-4 wheelhouse-title">Repair <%= @repair.id %></h1>
 
   <div class="card mb-4">
     <div class="card-body">
@@ -16,6 +16,61 @@
       <p><strong>Handed back:</strong><%= @repair.handed_back_at&.strftime("%d/%m/%Y %H:%M") || "Not handed back" %></p>
     </div>
   </div>
+
+
+  <h2 class="mb-3">Intake photos</h2>
+
+  <% if @repair.intake_photos.attached? %>
+    <div class="row g-3 mb-4">
+      <% @repair.intake_photos.each do |photo| %>
+        <div class="col-md-4">
+
+          <%= link_to url_for(photo), target: "_blank" do %>
+            <%= image_tag photo.variant(:display),
+                  class: "img-fluid rounded",
+                  alt: "#{@repair.bike.brand} #{@repair.bike.model}, repair ##{@repair.id}" %>
+          <% end %>
+
+          <div class="mt-2">
+            <%= button_to "Remove photo",
+                  repair_intake_photo_path(
+                    @repair,
+                    attachment_id: photo.id
+                  ),
+                  method: :delete,
+                  class: "btn btn-outline-danger btn-sm",
+                  form: {
+                    data: {
+                      turbo_confirm: "Are you sure you want to remove this photo?"
+                    }
+                  } %>
+          </div>
+
+        </div>
+      <% end %>
+    </div>
+
+  <% else %>
+    <div class="alert alert-info wheelhouse-empty">
+      No intake photos.
+    </div>
+  <% end %>
+
+
+  <h2 class="mb-3 mt-4">Diagnosis</h2>
+
+  <% if @repair.diagnosis.present? %>
+    <div class="card mb-4">
+      <div class="card-body">
+        <%= @repair.diagnosis %>
+      </div>
+    </div>
+  <% else %>
+    <div class="alert alert-info wheelhouse-empty">
+      No diagnosis has been added.
+    </div>
+  <% end %>
+
 
   <h2 class="mb-3">Services</h2>
 

@@ -1,0 +1,54 @@
+<tr>
+  <td>
+    <% if repair.intake_photos.attached? %>
+      <% photo = repair.intake_photos.first %>
+
+      <%= image_tag photo.variant(:thumbnail),
+            class: "rounded",
+            alt: "#{repair.bike.brand} #{repair.bike.model}, repair ##{repair.id}" %>
+    <% else %>
+      <div class="repair-thumbnail-placeholder">
+        No photo
+      </div>
+    <% end %>
+  </td>
+
+  <td>
+    <%= link_to [repair.bike.brand, repair.bike.model].compact.join(" "),
+                bike_path(repair.bike) %>
+  </td>
+
+  <td>
+    <%= repair.mechanic&.name || "Not assigned" %>
+  </td>
+
+  <td class="<%= 'text-danger fw-bold' if repair.overdue? %>">
+    <%= repair.promised_on.strftime("%d/%m/%Y") %>
+
+    <% if repair.overdue? %>
+      <span class="badge wheelhouse-overdue">
+        Overdue
+      </span>
+    <% end %>
+  </td>
+
+  <td>
+    <%= repair.state.humanize %>
+  </td>
+
+  <td>
+    <% if repair.diagnosis.present? %>
+      <div class="text-truncate" style="max-width: 250px;">
+        <%= truncate(repair.diagnosis.to_plain_text, length: 80) %>
+      </div>
+    <% else %>
+      <span class="text-muted">No diagnosis</span>
+    <% end %>
+  </td>
+
+  <td>
+    <%= link_to "View",
+                repair_path(repair),
+                class: "btn btn-primary wheelhouse-btn btn-sm" %>
+  </td>
+</tr>

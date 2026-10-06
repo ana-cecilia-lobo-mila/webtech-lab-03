@@ -1,13 +1,13 @@
 <%= form_with model: repair do |form| %>
-    <% if repair.errors.any? %>
+  <% if repair.errors.any? %>
     <div class="alert alert-danger">
-        <ul class="mb-0">
-            <% repair.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
+      <ul class="mb-0">
+        <% repair.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
         <% end %>
-        </ul>
+      </ul>
     </div>
-    <% end %>
+  <% end %>
 
   <div class="mb-3">
     <%= form.label :bike_id, "Bike", class: "form-label" %>
@@ -19,35 +19,35 @@
     <% end %>
 
     <% repair.errors.full_messages_for(:bike_id).each do |message| %>
-        <div class="invalid-feedback"><%= message %></div>
-        <% end %>
-    </div>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
 
-    <div class="mb-3">
-        <%= form.label :mechanic_id, "Mechanic", class: "form-label" %>
+  <div class="mb-3">
+    <%= form.label :mechanic_id, "Mechanic", class: "form-label" %>
 
         <%= form.collection_select :mechanic_id, Mechanic.by_name, :id, :name, { include_blank: "No mechanic assigned" }, { class: "form-select #{'is-invalid' if repair.errors[:mechanic].any? || repair.errors[:mechanic_id].any?}" } %>
 
-        <% repair.errors.full_messages_for(:mechanic).each do |message| %>
-        <div class="invalid-feedback"><%= message %></div>
-        <% end %>
+    <% repair.errors.full_messages_for(:mechanic).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
 
-        <% repair.errors.full_messages_for(:mechanic_id).each do |message| %>
-        <div class="invalid-feedback"><%= message %></div>
-        <% end %>
-    </div>
+    <% repair.errors.full_messages_for(:mechanic_id).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
 
-    <div class="mb-3">
-        <%= form.label :promised_on, class: "form-label" %>
+  <div class="mb-3">
+    <%= form.label :promised_on, class: "form-label" %>
 
         <%= form.date_field :promised_on, class: "form-control #{'is-invalid' if repair.errors[:promised_on].any?}" %>
 
-        <% repair.errors.full_messages_for(:promised_on).each do |message| %>
-        <div class="invalid-feedback"><%= message %></div>
-        <% end %>
-    </div>
+    <% repair.errors.full_messages_for(:promised_on).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
 
-    <div class="mb-3">
+  <div class="mb-3">
     <%= form.label :started_on, class: "form-label" %>
 
     <%= form.date_field :started_on, class: "form-control #{'is-invalid' if repair.errors[:started_on].any?}" %>
@@ -55,80 +55,102 @@
     <% repair.errors.full_messages_for(:started_on).each do |message| %>
       <div class="invalid-feedback"><%= message %></div>
     <% end %>
-    </div>
+  </div>
 
-    <div class="mb-3">
+  <div class="mb-3">
     <%= form.label :handed_back_at, class: "form-label" %>
 
     <%= form.datetime_local_field :handed_back_at, class: "form-control #{'is-invalid' if repair.errors[:handed_back_at].any?}" %>
 
     <% repair.errors.full_messages_for(:handed_back_at).each do |message| %>
-        <div class="invalid-feedback"><%= message %></div>
+      <div class="invalid-feedback"><%= message %></div>
     <% end %>
-    </div>
+  </div>
 
-    <div class="mb-3">
-        <%= form.label :state, class: "form-label" %>
+  <div class="mb-3">
+    <%= form.label :state, class: "form-label" %>
 
         <%= form.select :state, Repair.states.keys.map { |state| [state.humanize, state] }, {}, class: "form-select #{'is-invalid' if repair.errors[:state].any?}" %>
 
-        <% repair.errors.full_messages_for(:state).each do |message| %>
-        <div class="invalid-feedback"><%= message %></div>
-        <% end %>
-    </div>
+    <% repair.errors.full_messages_for(:state).each do |message| %>
+      <div class="invalid-feedback"><%= message %></div>
+    <% end %>
+  </div>
 
-    <h2 class="h4 mt-4">Services</h2>
+  <div class="mb-3">
+    <%= form.label :intake_photos, "Intake photos", class: "form-label" %>
 
-    <div id="repair-services">
-        <%= form.fields_for :repair_services do |line_form| %>
-        <div class="border rounded p-3 mb-3">
+    <%= form.file_field :intake_photos,
+          multiple: true,
+          accept: "image/jpeg,image/png",
+          class: "form-control #{'is-invalid' if repair.errors[:intake_photos].any?}" %>
+
+    <% repair.errors.full_messages_for(:intake_photos).each do |message| %>
+      <div class="invalid-feedback">
+        <%= message %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :diagnosis, "Diagnosis", class: "form-label" %>
+
+    <%= form.rich_text_area :diagnosis,
+          class: "form-control" %>
+  </div>
+
+  <h2 class="h4 mt-4">Services</h2>
+
+  <div id="repair-services">
+    <%= form.fields_for :repair_services do |line_form| %>
+      <div class="border rounded p-3 mb-3">
 
         <% if line_form.object.errors.any? %>
-            <div class="alert alert-danger">
-                <ul class="mb-0">
-                <% line_form.object.errors.full_messages.each do |message| %>
-                    <li><%= message %></li>
-                <% end %>
-                </ul>
-            </div>
+          <div class="alert alert-danger">
+            <ul class="mb-0">
+              <% line_form.object.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
         <% end %>
 
         <%= line_form.hidden_field :id if line_form.object.persisted? %>
 
         <div class="mb-3">
-            <%= line_form.label :service_id, "Service", class: "form-label" %>
+          <%= line_form.label :service_id, "Service", class: "form-label" %>
 
             <%= line_form.collection_select :service_id, Service.by_name, :id, :name, { prompt: "Select a service" }, { class: "form-select #{'is-invalid' if line_form.object.errors[:service].any? || line_form.object.errors[:service_id].any?}" } %>
 
-            <% line_form.object.errors.full_messages_for(:service).each do |message| %>
+          <% line_form.object.errors.full_messages_for(:service).each do |message| %>
             <div class="invalid-feedback"><%= message %></div>
-            <% end %>
+          <% end %>
 
-            <% line_form.object.errors.full_messages_for(:service_id).each do |message| %>
+          <% line_form.object.errors.full_messages_for(:service_id).each do |message| %>
             <div class="invalid-feedback"><%= message %></div>
-            <% end %>
+          <% end %>
         </div>
 
         <div class="mb-3">
-            <%= line_form.label :charged_price, "Charged price", class: "form-label" %>
+          <%= line_form.label :charged_price, "Charged price", class: "form-label" %>
 
             <%= line_form.number_field :charged_price, step: 0.01, min: 0.01, class: "form-control #{'is-invalid' if line_form.object.errors[:charged_price].any?}" %>
 
-            <% line_form.object.errors.full_messages_for(:charged_price).each do |message| %>
+          <% line_form.object.errors.full_messages_for(:charged_price).each do |message| %>
             <div class="invalid-feedback"><%= message %></div>
-            <% end %>
+          <% end %>
         </div>
 
         <% if line_form.object.persisted? %>
-            <div class="form-check">
+          <div class="form-check">
             <%= line_form.check_box :_destroy, class: "form-check-input" %>
             <%= line_form.label :_destroy, "Remove service", class: "form-check-label" %>
-            </div>
+          </div>
         <% end %>
 
-        </div>
-        <% end %>
-    </div>
+      </div>
+    <% end %>
+  </div>
 
-    <%= form.submit class: "btn btn-primary wheelhouse-btn" %>
+  <%= form.submit class: "btn btn-primary wheelhouse-btn" %>
 <% end %>
