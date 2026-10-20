@@ -14,7 +14,7 @@ class RepairsController < ApplicationController
 
   def new
     @repair = Repair.new(bike_id: params[:bike_id])
-    @repair.repair_services.build
+    3.times { @repair.repair_services.build }
   end
 
   def edit
@@ -75,23 +75,23 @@ class RepairsController < ApplicationController
   end
 
   def repair_params
-    params.expect(
-      repair: [
-        :bike_id,
-        :mechanic_id,
-        :promised_on,
-        :started_on,
-        :handed_back_at,
-        :state,
-        :diagnosis,
-        intake_photos: [],
-        repair_services_attributes: [
-          :id,
-          :service_id,
-          :charged_price,
-          :_destroy
-        ]
-      ]
-    )
+  params.expect(
+    repair: [
+      :bike_id,
+      :mechanic_id,
+      :promised_on,
+      :started_on,
+      :handed_back_at,
+      :state,
+      :diagnosis,
+      intake_photos: [],
+      repair_services_attributes: [[
+        :id,
+        :service_id,
+        :charged_price,
+        :_destroy
+      ]]
+    ]
+  )
   end
 end

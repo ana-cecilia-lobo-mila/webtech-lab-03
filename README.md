@@ -22,7 +22,7 @@ Wheelhouse has been tested with the following environment:
 
 - Windows 10/11
 - WSL2 with Ubuntu
-- Ruby 4.0.4
+- Ruby 3.3.8
 - Rails 8.1.3.1
 - PostgreSQL
 - Node.js
@@ -98,13 +98,46 @@ Build the CSS assets:
 yarn build:css
 ```
 
-Start the application:
+## API token configuration
+
+Protected API routes require an HTTP Bearer token.
+
+The token is stored in Rails encrypted credentials and is not included directly in the repository.
+
+For a fresh clone, create local development credentials with:
 
 ```bash
-bin/dev
+EDITOR="nano" bin/rails credentials:edit --environment development
 ```
 
-Then open:
+Add the following configuration:
+
+```yaml
+api:
+  token: YOUR_API_TOKEN
+```
+
+Replace `YOUR_API_TOKEN` with your own token.
+
+The credentials are encrypted by Rails. Do not commit the credentials key or `config/master.key`.
+
+If you already have access to the project's existing Rails credentials and master key, you can edit them with:
+
+```bash
+EDITOR="nano" bin/rails credentials:edit
+```
+
+## Running Wheelhouse
+
+Start the Rails application:
+
+```bash
+bin/rails server
+```
+
+The application and API run on port `3000`.
+
+The HTML application is available at:
 
 * http://localhost:3000/
 * http://localhost:3000/customers
@@ -116,6 +149,48 @@ Then open:
 The seed data includes repairs with intake photos and formatted diagnoses. After a fresh setup, the repairs index displays generated thumbnails through Active Storage.
 
 Seed images stored under `db/seeds/images/` are local project assets used to provide sample intake photos for development data.
+
+## API
+
+The Wheelhouse JSON API is available under:
+
+```text
+http://localhost:3000/api/v1
+```
+
+Reading services is public.
+
+Reading repairs and creating services require an HTTP Bearer token.
+
+For all available routes, response formats, status codes, and examples, see the [API Documentation](docs/api.md).
+
+### API examples
+
+Get the public price list:
+
+```bash
+curl http://localhost:3000/api/v1/services
+```
+
+Access the protected repairs endpoint:
+
+```bash
+curl \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  http://localhost:3000/api/v1/repairs
+```
+
+Replace `YOUR_API_TOKEN` with the token configured in Rails credentials.
+
+## Published price list
+
+The Wheelhouse price list is displayed on the published personal website:
+
+https://ana-cecilia-lobo-mila.github.io/webtech-lab-01/
+
+The published page fetches the public service list from the Wheelhouse API.
+
+For the published page to find the API, Wheelhouse must be running locally on port `3000`.
 
 ## Main Features
 
