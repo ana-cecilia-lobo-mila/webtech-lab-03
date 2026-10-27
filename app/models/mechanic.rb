@@ -1,4 +1,5 @@
 class Mechanic < ApplicationRecord
+    has_one :user, dependent: :restrict_with_error, inverse_of: :mechanic
     has_many :repairs, dependent: :restrict_with_error
 
     scope :by_name, -> { order(:name) }

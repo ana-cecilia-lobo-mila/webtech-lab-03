@@ -137,6 +137,8 @@ bin/rails server
 
 The application and API run on port `3000`.
 
+After running `bin/rails db:setup`, use one of the development accounts listed below to sign in.
+
 The HTML application is available at:
 
 * http://localhost:3000/
@@ -149,6 +151,70 @@ The HTML application is available at:
 The seed data includes repairs with intake photos and formatted diagnoses. After a fresh setup, the repairs index displays generated thumbnails through Active Storage.
 
 Seed images stored under `db/seeds/images/` are local project assets used to provide sample intake photos for development data.
+
+## Authentication
+
+Wheelhouse uses the native Rails 8 authentication system.
+
+Most pages require a signed-in account. Visitors may access:
+
+- The services list and individual service pages.
+- Sign in.
+- Sign up.
+- Password recovery pages.
+
+Customers do not have accounts.
+
+Each account has one of three roles: `owner`, `counter`, or `mechanic`.
+
+The sign-in page is available at:
+
+```text
+http://localhost:3000/session/new
+```
+
+The sign-up page is available at:
+
+```text
+http://localhost:3000/registration/new
+```
+
+## Development accounts
+
+The following accounts are created by `db/seeds.rb` and exist only in development.
+
+| Staff member | Email | Role | Password |
+| --- | --- | --- | --- |
+| Philip | `philip@wheelhouse.cl` | owner | `PhilipOwner26!` |
+| Theo | `theo@wheelhouse.cl` | mechanic | `TheoMechanic26!` |
+| Joseph | `joseph@wheelhouse.cl` | mechanic | `JosephMechanic26!` |
+| Sara | `sara@wheelhouse.cl` | counter | `SaraCounter26!` |
+| No staff member | `staff@wheelhouse.cl` | mechanic | `Standalone26!` |
+
+These credentials are development seed data only and must not be used in production.
+
+## Email in development
+
+Wheelhouse does not use an external mail provider or SMTP server in development.
+
+Development emails are written locally to:
+
+```text
+tmp/mails/
+```
+
+This includes:
+
+- Password reset emails.
+- Welcome emails for newly created accounts.
+
+Password reset links point to the application running locally at `http://localhost:3000`.
+
+Mailer previews are also available while the Rails application is running:
+
+```text
+http://localhost:3000/rails/mailers
+```
 
 ## API
 

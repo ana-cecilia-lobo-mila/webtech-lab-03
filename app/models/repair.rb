@@ -1,6 +1,7 @@
 class Repair < ApplicationRecord
     belongs_to :bike
     belongs_to :mechanic, optional: true
+    belongs_to :taken_in_by, class_name: "User", optional: true, inverse_of: :taken_in_repairs
     has_many_attached :intake_photos do |attachable|
         attachable.variant :thumbnail, resize_to_fill: [120, 90]
         attachable.variant :display, resize_to_limit: [800, 600]

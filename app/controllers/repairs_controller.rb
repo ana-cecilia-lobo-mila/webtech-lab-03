@@ -3,7 +3,7 @@ class RepairsController < ApplicationController
 
   def index
     @repairs = Repair
-      .includes(:bike, :mechanic)
+      .includes(:bike, :mechanic, taken_in_by: :mechanic)
       .with_attached_intake_photos
       .with_rich_text_diagnosis
       .by_promised_on
@@ -23,6 +23,7 @@ class RepairsController < ApplicationController
 
   def create
     @repair = Repair.new(repair_params)
+    @repair.taken_in_by = Current.user
 
     if @repair.save
       redirect_to @repair, notice: "Repair for #{@repair.bike.serial_number} was created successfully."
@@ -71,7 +72,11 @@ class RepairsController < ApplicationController
   def set_repair
     repair_id = params[:id] || params[:repair_id]
 
-    @repair = Repair.includes(:bike, :mechanic, repair_services: :service).with_attached_intake_photos.with_rich_text_diagnosis.find(repair_id)
+    @repair = Repair
+      .includes(:bike, :mechanic, { taken_in_by: :mechanic }, repair_services: :service)
+      .with_attached_intake_photos
+      .with_rich_text_diagnosis
+      .find(repair_id)
   end
 
   def repair_params

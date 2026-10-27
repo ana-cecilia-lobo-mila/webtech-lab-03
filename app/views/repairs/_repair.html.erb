@@ -22,6 +22,14 @@
     <%= repair.mechanic&.name || "Not assigned" %>
   </td>
 
+  <td>
+    <% if repair.taken_in_by %>
+      <%= repair.taken_in_by.mechanic&.name || repair.taken_in_by.email_address %>
+    <% else %>
+      <span class="text-muted">Not recorded</span>
+    <% end %>
+  </td>
+
   <td class="<%= 'text-danger fw-bold' if repair.overdue? %>">
     <%= repair.promised_on.strftime("%d/%m/%Y") %>
 
