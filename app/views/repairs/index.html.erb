@@ -1,7 +1,12 @@
+<% content_for :title, "Repairs" %>
+
 <div class="container mt-5">
   <h1 class="mb-4 wheelhouse-title">Repairs</h1>
 
-  <%= link_to "New Repair", new_repair_path, class: "btn btn-primary wheelhouse-btn mb-3" %>
+  <% if policy(Repair).new? %>
+    <%= link_to "New Repair", new_repair_path,
+                class: "btn btn-primary wheelhouse-btn mb-3" %>
+  <% end %>
 
   <% if @repairs.any? %>
     <div class="table-responsive">
@@ -24,7 +29,9 @@
         </tbody>
       </table>
     </div>
-    <% else %>
-        <div class="alert alert-info wheelhouse-empty">No repairs found.</div>
-    <% end %>
+  <% else %>
+    <div class="alert alert-info wheelhouse-empty">
+      No repairs found.
+    </div>
+  <% end %>
 </div>

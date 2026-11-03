@@ -5,5 +5,8 @@
 
   <%= render "form", repair: @repair %>
 
-  <%= link_to "Back to repairs", repairs_path, class: "btn btn-secondary wheelhouse-btn mt-3" %>
+  <% if policy(Repair).index? %>
+    <%= link_to "Back to repairs", repairs_path,
+                class: "btn btn-secondary wheelhouse-btn mt-3" %>
+  <% end %>
 </div>

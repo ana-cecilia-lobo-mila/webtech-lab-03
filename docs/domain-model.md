@@ -43,7 +43,6 @@ Table repairs {
   mechanic_id bigint [null]
   started_on date
   promised_on date [not null]
-  handed_back_at datetime
   state varchar [not null, default: 'received']
   created_at datetime [not null]
   updated_at datetime [not null]

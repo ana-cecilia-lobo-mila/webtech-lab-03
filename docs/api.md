@@ -41,7 +41,6 @@ Example:
   "state": "approved",
   "started_on": "2026-09-01",
   "promised_on": "2026-09-05",
-  "handed_back_at": null,
   "bike": {
     "brand": "Trek",
     "model": "Marlin",
@@ -81,7 +80,6 @@ Example response:
     "state": "approved",
     "started_on": "2026-09-01",
     "promised_on": "2026-09-05",
-    "handed_back_at": null,
     "bike": {
       "brand": "Trek",
       "model": "Marlin",

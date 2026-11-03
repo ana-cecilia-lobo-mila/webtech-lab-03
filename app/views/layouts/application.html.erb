@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -18,7 +19,6 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
@@ -43,25 +43,35 @@
                 <%= link_to "Home", root_path, class: "nav-link #{'active' if current_page?(root_path)}" %>
               </li>
 
-              <li class="nav-item">
-                <%= link_to "Customers", customers_path, class: "nav-link #{'active' if controller_name == 'customers'}" %>
-              </li>
+              <% if policy(Customer).index? %>
+                <li class="nav-item">
+                  <%= link_to "Customers", customers_path, class: "nav-link #{'active' if controller_name == 'customers'}" %>
+                </li>
+              <% end %>
 
-              <li class="nav-item">
-                <%= link_to "Bikes", bikes_path, class: "nav-link #{'active' if controller_name == 'bikes'}" %>
-              </li>
+              <% if policy(Bike).index? %>
+                <li class="nav-item">
+                  <%= link_to "Bikes", bikes_path, class: "nav-link #{'active' if controller_name == 'bikes'}" %>
+                </li>
+              <% end %>
 
-              <li class="nav-item">
-                <%= link_to "Repairs", repairs_path, class: "nav-link #{'active' if controller_name == 'repairs'}" %>
-              </li>
+              <% if policy(Repair).index? %>
+                <li class="nav-item">
+                  <%= link_to "Repairs", repairs_path, class: "nav-link #{'active' if controller_name == 'repairs'}" %>
+                </li>
+              <% end %>
 
-              <li class="nav-item">
-                <%= link_to "Services", services_path, class: "nav-link #{'active' if controller_name == 'services'}" %>
-              </li>
+              <% if policy(Service).index? %>
+                <li class="nav-item">
+                  <%= link_to "Services", services_path, class: "nav-link #{'active' if controller_name == 'services'}" %>
+                </li>
+              <% end %>
 
-              <li class="nav-item">
-                <%= link_to "Mechanics", mechanics_path, class: "nav-link #{'active' if controller_name == 'mechanics'}" %>
-              </li>
+              <% if policy(Mechanic).index? %>
+                <li class="nav-item">
+                  <%= link_to "Mechanics", mechanics_path, class: "nav-link #{'active' if controller_name == 'mechanics'}" %>
+                </li>
+              <% end %>
 
               <li class="nav-item">
                 <%= link_to "Workshop", workshop_path, class: "nav-link #{'active' if current_page?(workshop_path)}" %>
@@ -81,13 +91,15 @@
                 <%= Current.user.role.humanize %>
               </span>
 
-              <%= button_to "Sign out", session_path, method: :delete,  class: "btn btn-outline-light btn-sm" %>
+              <%= button_to "Sign out", session_path, method: :delete, class: "btn btn-outline-light btn-sm" %>
             </div>
           <% else %>
             <ul class="navbar-nav ms-auto">
-              <li class="nav-item">
-                <%= link_to "Price list", services_path, class: "nav-link #{'active' if controller_name == 'services'}" %>
-              </li>
+              <% if policy(Service).index? %>
+                <li class="nav-item">
+                  <%= link_to "Price list", services_path, class: "nav-link #{'active' if controller_name == 'services'}" %>
+                </li>
+              <% end %>
 
               <li class="nav-item">
                 <%= link_to "Sign in", new_session_path, class: "nav-link #{'active' if controller_name == 'sessions'}" %>
@@ -99,10 +111,11 @@
     </nav>
 
     <% flash.each do |type, message| %>
-    <div class="alert <%= type == "notice" ? "alert-success" : "alert-danger" %> alert-dismissible fade show m-3" role="alert">
-      <%= message %>
-    </div>
-  <% end %>
+      <div class="alert <%= type == "notice" ? "alert-success" : "alert-danger" %> alert-dismissible fade show m-3" role="alert">
+        <%= message %>
+      </div>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>

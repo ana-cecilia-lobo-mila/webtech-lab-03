@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_27_161619) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_03_210447) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -90,7 +90,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_27_161619) do
   create_table "repairs", force: :cascade do |t|
     t.bigint "bike_id", null: false
     t.datetime "created_at", null: false
-    t.datetime "handed_back_at"
     t.bigint "mechanic_id"
     t.date "promised_on", null: false
     t.date "started_on"

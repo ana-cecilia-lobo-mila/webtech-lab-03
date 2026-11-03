@@ -1,11 +1,42 @@
+
 <div class="container mt-5">
   <h1 class="mb-4 wheelhouse-title">Repair <%= @repair.id %></h1>
 
   <div class="card mb-4">
     <div class="card-body">
-      <p><strong>Bike:</strong><%= link_to [@repair.bike.brand, @repair.bike.model].compact.join(" "), bike_path(@repair.bike) %></p>
+      <p>
+        <strong>Bike:</strong>
+        <% if policy(@repair.bike).show? %>
+          <%= link_to [@repair.bike.brand, @repair.bike.model].compact.join(" "),
+                      bike_path(@repair.bike) %>
+        <% else %>
+          <%= [@repair.bike.brand, @repair.bike.model].compact.join(" ") %>
+        <% end %>
+      </p>
 
-      <p><strong>Mechanic:</strong><% if @repair.mechanic %> <%= link_to @repair.mechanic.name, mechanic_path(@repair.mechanic) %><% else %>Not assigned<% end %> </p>
+      <p>
+        <strong>Customer:</strong>
+        <% if policy(@repair.bike.customer).show? %>
+          <%= link_to @repair.bike.customer.name,
+                      customer_path(@repair.bike.customer) %>
+        <% else %>
+          <%= @repair.bike.customer.name %>
+        <% end %>
+      </p>
+
+      <p>
+        <strong>Mechanic:</strong>
+        <% if @repair.mechanic %>
+          <% if policy(@repair.mechanic).show? %>
+            <%= link_to @repair.mechanic.name,
+                        mechanic_path(@repair.mechanic) %>
+          <% else %>
+            <%= @repair.mechanic.name %>
+          <% end %>
+        <% else %>
+          Not assigned
+        <% end %>
+      </p>
 
       <p>
         <strong>Taken in by:</strong>
@@ -16,16 +47,19 @@
         <% end %>
       </p>
 
-      <p><strong>Started on:</strong><%= @repair.started_on&.strftime("%d/%m/%Y") || "Not started" %></p>
+      <p><strong>Started on:</strong> <%= @repair.started_on&.strftime("%d/%m/%Y") || "Not started" %></p>
 
-      <p class="<%= 'text-danger fw-bold' if @repair.overdue? %>"><strong>Promised on:</strong><%= @repair.promised_on.strftime("%d/%m/%Y") %><% if @repair.overdue? %><span class="badge bg-danger wheelhouse-overdue">Overdue</span><% end %></p>
+      <p class="<%= 'text-danger fw-bold' if @repair.overdue? %>">
+        <strong>Promised on:</strong>
+        <%= @repair.promised_on.strftime("%d/%m/%Y") %>
+        <% if @repair.overdue? %>
+          <span class="badge bg-danger wheelhouse-overdue">Overdue</span>
+        <% end %>
+      </p>
 
-      <p><strong>State:</strong><%= @repair.state.humanize %></p>
-
-      <p><strong>Handed back:</strong><%= @repair.handed_back_at&.strftime("%d/%m/%Y %H:%M") || "Not handed back" %></p>
+      <p><strong>State:</strong> <%= @repair.state.humanize %></p>
     </div>
   </div>
-
 
   <h2 class="mb-3">Intake photos</h2>
 
@@ -33,38 +67,33 @@
     <div class="row g-3 mb-4">
       <% @repair.intake_photos.each do |photo| %>
         <div class="col-md-4">
-
           <%= link_to url_for(photo), target: "_blank" do %>
             <%= image_tag photo.variant(:display),
                   class: "img-fluid rounded",
                   alt: "#{@repair.bike.brand} #{@repair.bike.model}, repair ##{@repair.id}" %>
           <% end %>
 
-          <div class="mt-2">
-            <%= button_to "Remove photo",
-                  repair_intake_photo_path(
-                    @repair,
-                    attachment_id: photo.id
-                  ),
-                  method: :delete,
-                  class: "btn btn-outline-danger btn-sm",
-                  form: {
-                    data: {
-                      turbo_confirm: "Are you sure you want to remove this photo?"
-                    }
-                  } %>
-          </div>
-
+          <% if policy(@repair).destroy_intake_photo? %>
+            <div class="mt-2">
+              <%= button_to "Remove photo",
+                    repair_intake_photo_path(@repair, attachment_id: photo.id),
+                    method: :delete,
+                    class: "btn btn-outline-danger btn-sm",
+                    form: {
+                      data: {
+                        turbo_confirm: "Are you sure you want to remove this photo?"
+                      }
+                    } %>
+            </div>
+          <% end %>
         </div>
       <% end %>
     </div>
-
   <% else %>
     <div class="alert alert-info wheelhouse-empty">
       No intake photos.
     </div>
   <% end %>
-
 
   <h2 class="mb-3 mt-4">Diagnosis</h2>
 
@@ -79,7 +108,6 @@
       No diagnosis has been added.
     </div>
   <% end %>
-
 
   <h2 class="mb-3">Services</h2>
 
@@ -97,7 +125,8 @@
           <% @repair.repair_services.each do |repair_service| %>
             <tr>
               <td>
-                <%= link_to repair_service.service.name, service_path(repair_service.service) %>
+                <%= link_to repair_service.service.name,
+                            service_path(repair_service.service) %>
               </td>
               <td>
                 $<%= number_with_delimiter(repair_service.charged_price) %>
@@ -108,15 +137,28 @@
       </table>
     </div>
 
-    <p class="text-end wheelhouse-total"><strong>Total: $<%= number_with_delimiter(@repair.total) %></strong></p>
-
+    <p class="text-end wheelhouse-total">
+      <strong>Total: $<%= number_with_delimiter(@repair.total) %></strong>
+    </p>
   <% else %>
-    <div class="alert alert-info wheelhouse-empty">No services have been added to this repair.</div>
+    <div class="alert alert-info wheelhouse-empty">
+      No services have been added to this repair.
+    </div>
   <% end %>
 
-  <%= link_to "Edit Repair", edit_repair_path(@repair), class: "btn btn-primary wheelhouse-btn me-2" %>
+  <% if policy(@repair).edit? %>
+    <%= link_to "Edit Repair", edit_repair_path(@repair),
+                class: "btn btn-primary wheelhouse-btn me-2" %>
+  <% end %>
 
-  <%= button_to "Delete Repair", @repair, method: :delete, class: "btn btn-danger wheelhouse-btn", data: { turbo_confirm: "Are you sure you want to delete repair ##{@repair.id} for #{@repair.bike.serial_number}?" } %>
+  <% if policy(@repair).destroy? %>
+    <%= button_to "Delete Repair", @repair, method: :delete,
+                  class: "btn btn-danger wheelhouse-btn",
+                  data: { turbo_confirm: "Are you sure you want to delete repair ##{@repair.id} for #{@repair.bike.serial_number}?" } %>
+  <% end %>
 
-  <%= link_to "Back to repairs", repairs_path, class: "btn btn-secondary wheelhouse-btn" %>
+  <% if policy(Repair).index? %>
+    <%= link_to "Back to repairs", repairs_path,
+                class: "btn btn-secondary wheelhouse-btn" %>
+  <% end %>
 </div>

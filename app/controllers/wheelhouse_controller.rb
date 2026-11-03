@@ -1,14 +1,13 @@
 class WheelhouseController < ApplicationController
   def home
-  end
-
-  def services
-    @services = Service.order(:name)
+    skip_authorization
   end
 
   def workshop
+    skip_authorization
   end
 
   def about
+    skip_authorization
   end
 end

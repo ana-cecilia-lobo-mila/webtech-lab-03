@@ -1,14 +1,23 @@
 class BikesController < ApplicationController
   before_action :set_bike, only: [:show, :edit, :update, :destroy]
+
   def index
-    @bikes = Bike.includes(:customer).by_brand_and_model
+    authorize Bike, :index?
+    @bikes = policy_scope(Bike).includes(:customer).by_brand_and_model
   end
 
   def show
+    @repairs = policy_scope(Repair)
+      .where(bike_id: @bike.id)
+      .includes(:bike, :mechanic, taken_in_by: :mechanic)
+      .with_attached_intake_photos
+      .with_rich_text_diagnosis
+      .by_promised_on
   end
 
   def new
     @bike = Bike.new(customer_id: params[:customer_id])
+    authorize @bike
   end
 
   def edit
@@ -16,6 +25,7 @@ class BikesController < ApplicationController
 
   def create
     @bike = Bike.new(bike_params)
+    authorize @bike
 
     if @bike.save
       redirect_to @bike, notice: "#{@bike.serial_number} was created successfully."
@@ -43,23 +53,8 @@ class BikesController < ApplicationController
   private
 
   def set_bike
-    @bike = Bike.includes(
-      :customer,
-      repairs: [
-        :mechanic,
-        :rich_text_diagnosis,
-        {
-          intake_photos_attachments: {
-            blob: {
-              variant_records: {
-                image_attachment: :blob
-              }
-            }
-          }
-        },
-        { repair_services: :service }
-      ]
-    ).find(params[:id])
+    @bike = Bike.includes(:customer).find(params[:id])
+    authorize @bike
   end
 
   def bike_params

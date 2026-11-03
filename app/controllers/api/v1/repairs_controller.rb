@@ -37,7 +37,6 @@ module Api
                 state: repair.state,
                 started_on: repair.started_on,
                 promised_on: repair.promised_on,
-                handed_back_at: repair.handed_back_at,
 
                 bike: {
                     brand: repair.bike.brand,

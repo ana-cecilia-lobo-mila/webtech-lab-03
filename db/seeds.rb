@@ -136,24 +136,24 @@ c10 = Customer.create!(name: "Nathanael Fitzgerald", phone: "988275142")
 
 puts "Creating 15 repairs..."
 
-# 1. Overdue and not handed back
+# 1. Overdue
 r1 = Repair.create!( bike_id: b1_a.id, mechanic_id: m1.id, started_on: 10.days.ago, promised_on: 2.days.ago, state: "in_repair", taken_in_by: u_counter)
 RepairService.create!(repair_id: r1.id, service_id: s_reg.id, charged_price: s_reg.price)
 
 # 2. In and out the same day
-r2 = Repair.create!(bike_id: b1_b.id, mechanic_id: m2.id, started_on: 5.days.ago, promised_on: 5.days.ago, state: "picked_up", handed_back_at: 5.days.ago + 4.hours, taken_in_by: u_counter)
+r2 = Repair.create!(bike_id: b1_b.id, mechanic_id: m2.id, started_on: 5.days.ago, promised_on: 5.days.ago, state: "picked_up", taken_in_by: u_counter)
 RepairService.create!(repair_id: r2.id, service_id: s_wash.id, charged_price: s_wash.price)
 
 # 3. Customer heard price and said no
-r3 = Repair.create!(bike_id: b2_a.id, mechanic_id: m_mostrador.id, started_on: 1.day.ago, promised_on: 1.day.from_now, state: "rejected", handed_back_at: 1.day.ago + 2.hours, taken_in_by: u_counter)
+r3 = Repair.create!(bike_id: b2_a.id, mechanic_id: m_mostrador.id, started_on: 1.day.ago, promised_on: 1.day.from_now, state: "rejected", taken_in_by: u_counter)
 RepairService.create!(repair_id: r3.id, service_id: s_reg.id, charged_price: s_reg.price)
 
 # 4. Same bike, different repair
-r4 = Repair.create!(bike_id: b1_a.id, mechanic_id: m3.id, started_on: 2.months.ago, promised_on: 2.months.ago + 2.days, state: "picked_up", handed_back_at: 2.months.ago + 3.days, taken_in_by: u_owner)
+r4 = Repair.create!(bike_id: b1_a.id, mechanic_id: m3.id, started_on: 2.months.ago, promised_on: 2.months.ago + 2.days, state: "picked_up", taken_in_by: u_owner)
 RepairService.create!(repair_id: r4.id, service_id: s_wash.id, charged_price: s_wash.price)
 
 # 5. Old repair with charged price below list price
-r5 = Repair.create!(bike_id: b5.id, mechanic_id: m1.id, started_on: 2.years.ago, promised_on: 2.years.ago + 1.day, state: "picked_up", handed_back_at: 2.years.ago + 2.days, taken_in_by: u_counter)
+r5 = Repair.create!(bike_id: b5.id, mechanic_id: m1.id, started_on: 2.years.ago, promised_on: 2.years.ago + 1.day, state: "picked_up", taken_in_by: u_counter)
 RepairService.create!(repair_id: r5.id, service_id: s_maintenance.id, charged_price: s_maintenance.price - 5000)
 
 # 6. Just received. Intentionally has no diagnosis.
@@ -173,7 +173,7 @@ r9 = Repair.create!(bike_id: b3_b.id, mechanic_id: m3.id, started_on: 2.weeks.ag
 RepairService.create!(repair_id: r9.id, service_id: s_maintenance.id, charged_price: s_maintenance.price)
 
 # 10. In repair
-r10 = Repair.create!(bike_id: b7.id, mechanic_id: m1.id, started_on: Date.current, promised_on: 2.weeks.from_now, state: "in_repair", taken_in_by: u_theo)
+r10 = Repair.create!(bike_id: b7.id, mechanic_id: m1.id, started_on: Date.current, promised_on: 2.weeks.from_now, state: "in_repair", taken_in_by: u_counter)
 RepairService.create!(repair_id: r10.id, service_id: s_wash.id, charged_price: s_wash.price)
 
 # 11. Just received
@@ -185,7 +185,7 @@ r12 = Repair.create!(bike_id: b9.id, mechanic_id: m1.id, started_on: 2.days.ago,
 RepairService.create!(repair_id: r12.id, service_id: s_maintenance.id, charged_price: s_maintenance.price)
 
 # 13. Ready
-r13 = Repair.create!(bike_id: b8.id, mechanic_id: m2.id, started_on: 2.days.ago, promised_on: 2.days.from_now, state: "ready", taken_in_by: u_joseph)
+r13 = Repair.create!(bike_id: b8.id, mechanic_id: m3.id, started_on: 2.days.ago, promised_on: 2.days.from_now, state: "ready", taken_in_by: u_counter)
 RepairService.create!(repair_id: r13.id, service_id: s_wash.id, charged_price: s_wash.price)
 
 # 14. Approved
@@ -193,7 +193,7 @@ r14 = Repair.create!(bike_id: b2_b.id, mechanic_id: m3.id, started_on: 1.day.ago
 RepairService.create!(repair_id: r14.id, service_id: s_reg.id, charged_price: s_reg.price)
 
 # 15. Picked up with 4 services
-r15 = Repair.create!(bike_id: b6.id, mechanic_id: m1.id, started_on: 3.days.ago, promised_on: 1.day.ago, state: "picked_up", handed_back_at: 1.day.ago, taken_in_by: u_owner)
+r15 = Repair.create!(bike_id: b6.id, mechanic_id: m1.id, started_on: 3.days.ago, promised_on: 1.day.ago, state: "picked_up", taken_in_by: u_owner)
 RepairService.create!(repair_id: r15.id, service_id: s_wash.id, charged_price: s_wash.price)
 RepairService.create!(repair_id: r15.id, service_id: s_reg.id, charged_price: s_reg.price)
 RepairService.create!(repair_id: r15.id, service_id: s_maintenance.id, charged_price: s_maintenance.price)

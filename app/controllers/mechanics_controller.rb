@@ -2,14 +2,20 @@ class MechanicsController < ApplicationController
   before_action :set_mechanic, only: [:show, :edit, :update, :destroy]
 
   def index
-    @mechanics = Mechanic.by_name
+    authorize Mechanic, :index?
+    @mechanics = policy_scope(Mechanic).by_name
   end
 
   def show
+    @repairs = policy_scope(Repair)
+      .where(mechanic_id: @mechanic.id)
+      .includes(:bike)
+      .by_promised_on
   end
 
   def new
     @mechanic = Mechanic.new
+    authorize @mechanic
   end
 
   def edit
@@ -17,6 +23,7 @@ class MechanicsController < ApplicationController
 
   def create
     @mechanic = Mechanic.new(mechanic_params)
+    authorize @mechanic
 
     if @mechanic.save
       redirect_to @mechanic, notice: "#{@mechanic.name} was created successfully."
@@ -44,7 +51,8 @@ class MechanicsController < ApplicationController
   private
 
   def set_mechanic
-    @mechanic = Mechanic.includes(repairs: :bike).find(params[:id])
+    @mechanic = Mechanic.find(params[:id])
+    authorize @mechanic
   end
 
   def mechanic_params

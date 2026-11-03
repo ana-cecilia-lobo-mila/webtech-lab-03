@@ -4,10 +4,10 @@ Wheelhouse is a bicycle repair shop management system designed to help the shop 
 
 ## Who uses Wheelhouse?
 
-- **Customers** — review repair information and view the shop's available services and prices.
-- **Counter managers** — register customers and bicycles, communicate with customers, record repair charges, manage ownership information, and monitor repairs.
-- **Mechanics** — inspect bicycles, perform repairs, add diagnoses, estimate repair times, and consult a bicycle's repair history.
-- **Owners/Administrators** — manage services and their prices.
+- **Customers** — interact with shop staff to register bicycles and request repairs. Customers do not have application accounts.
+- **Counter managers** — register customers and bicycles, create repairs, manage repair information, and monitor repair progress.
+- **Mechanics** — consult their assigned repairs, update repair states, add diagnoses, and upload intake photos.
+- **Owners/Administrators** — manage customers, bicycles, repairs, mechanics, services, and prices.
 
 ## Documentation
 
@@ -15,6 +15,7 @@ Wheelhouse is a bicycle repair shop management system designed to help the shop 
 * [Domain Model](docs/domain-model.md)
 * [Decisions](docs/decisions.md)
 * [Wireframes](docs/wireframes.md)
+* [Permissions](docs/permissions.md)
 
 ## Prerequisites
 
@@ -31,6 +32,36 @@ Wheelhouse has been tested with the following environment:
 - libvips
 
 `libvips` is required by Active Storage to generate image variants and thumbnails.
+
+### PostgreSQL Configuration
+
+The application connects to PostgreSQL using the `postgres` role on `localhost`. Development and test databases inherit the credentials configured in `config/database.yml`.
+
+To configure the PostgreSQL role in WSL2, open the PostgreSQL console:
+
+```bash
+sudo -u postgres psql
+```
+
+If the `postgres` role does not exist, create it:
+
+```sql
+CREATE ROLE postgres WITH LOGIN SUPERUSER;
+```
+
+Set its password (it must match the password configured in `config/database.yml`):
+
+```sql
+\password postgres
+```
+
+Enter the password when prompted, then exit:
+
+```sql
+\q
+```
+
+Make sure the PostgreSQL service is running before setting up the application databases.
 
 ### Installing libvips
 
@@ -141,12 +172,12 @@ After running `bin/rails db:setup`, use one of the development accounts listed b
 
 The HTML application is available at:
 
-* http://localhost:3000/
-* http://localhost:3000/customers
-* http://localhost:3000/bikes
-* http://localhost:3000/repairs
-* http://localhost:3000/services
-* http://localhost:3000/mechanics
+* [http://localhost:3000/](http://localhost:3000/)
+* [http://localhost:3000/customers](http://localhost:3000/customers)
+* [http://localhost:3000/bikes](http://localhost:3000/bikes)
+* [http://localhost:3000/repairs](http://localhost:3000/repairs)
+* [http://localhost:3000/services](http://localhost:3000/services)
+* [http://localhost:3000/mechanics](http://localhost:3000/mechanics)
 
 The seed data includes repairs with intake photos and formatted diagnoses. After a fresh setup, the repairs index displays generated thumbnails through Active Storage.
 
@@ -183,13 +214,13 @@ http://localhost:3000/registration/new
 
 The following accounts are created by `db/seeds.rb` and exist only in development.
 
-| Staff member | Email | Role | Password |
-| --- | --- | --- | --- |
-| Philip | `philip@wheelhouse.cl` | owner | `PhilipOwner26!` |
-| Theo | `theo@wheelhouse.cl` | mechanic | `TheoMechanic26!` |
-| Joseph | `joseph@wheelhouse.cl` | mechanic | `JosephMechanic26!` |
-| Sara | `sara@wheelhouse.cl` | counter | `SaraCounter26!` |
-| No staff member | `staff@wheelhouse.cl` | mechanic | `Standalone26!` |
+| Staff member | Email | Role | Password | Permissions |
+| --- | --- | --- | --- | --- |
+| Philip | `philip@wheelhouse.cl` | owner | `PhilipOwner26!` | Full access to customers, bikes, repairs, mechanics, and services. [Permissions](docs/permissions.md) |
+| Theo | `theo@wheelhouse.cl` | mechanic | `TheoMechanic26!` | View assigned repairs and update their state, diagnosis, and intake photos until picked up; view services and mechanics. [Permissions](docs/permissions.md) |
+| Joseph | `joseph@wheelhouse.cl` | mechanic | `JosephMechanic26!` | View assigned repairs and update their state, diagnosis, and intake photos until picked up; view services and mechanics. [Permissions](docs/permissions.md) |
+| Sara | `sara@wheelhouse.cl` | counter | `SaraCounter26!` | Create, view, and update customers and bikes; create and update repairs not yet picked up; view services and mechanics. [Permissions](docs/permissions.md) |
+| No staff member | `staff@wheelhouse.cl` | mechanic | `Standalone26!` | Can view services and mechanics, but has no access to repair records because no staff member is associated with the account. [Permissions](docs/permissions.md) |
 
 These credentials are development seed data only and must not be used in production.
 
@@ -252,7 +283,7 @@ Replace `YOUR_API_TOKEN` with the token configured in Rails credentials.
 
 The Wheelhouse price list is displayed on the published personal website:
 
-https://ana-cecilia-lobo-mila.github.io/webtech-lab-01/
+[https://ana-cecilia-lobo-mila.github.io/webtech-lab-01/](https://ana-cecilia-lobo-mila.github.io/webtech-lab-01/)
 
 The published page fetches the public service list from the Wheelhouse API.
 
@@ -278,3 +309,17 @@ For the published page to find the API, Wheelhouse must be running locally on po
 - Identify overdue repairs.
 - Handle empty collections gracefully.
 - Use responsive Bootstrap tables and navigation.
+
+## Verification
+
+Run the test suite:
+
+```bash
+bin/rails test
+```
+
+Run Brakeman to check for security vulnerabilities:
+
+```bash
+bin/brakeman --no-pager
+```

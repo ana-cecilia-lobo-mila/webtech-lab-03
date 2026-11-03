@@ -1,6 +1,7 @@
 class PasswordsController < ApplicationController
   allow_unauthenticated_access only: %i[new create edit update]
 
+  before_action :skip_authorization
   before_action :set_user_by_token, only: %i[edit update]
 
   rate_limit to: 10,

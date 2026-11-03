@@ -1,14 +1,21 @@
 <tr>
   <td>
-    <%= link_to bike.brand.presence || "Unknown", bike_path(bike) %>
+    <% if policy(bike).show? %>
+      <%= link_to bike.brand.presence || "Unknown", bike_path(bike) %>
+    <% else %>
+      <%= bike.brand.presence || "Unknown" %>
+    <% end %>
   </td>
+
+  <td><%= bike.model.presence || "Unknown" %></td>
+
+  <td><%= bike.color.presence || "Unknown" %></td>
+
   <td>
-    <%= bike.model.presence || "Unknown" %>
-  </td>
-  <td>
-    <%= bike.color.presence || "Unknown" %>
-  </td>
-  <td>
-    <%= link_to bike.customer.name, customer_path(bike.customer) %>
+    <% if policy(bike.customer).show? %>
+      <%= link_to bike.customer.name, customer_path(bike.customer) %>
+    <% else %>
+      <%= bike.customer.name %>
+    <% end %>
   </td>
 </tr>

@@ -1,3 +1,4 @@
+
 <tr>
   <td>
     <% if repair.intake_photos.attached? %>
@@ -14,8 +15,12 @@
   </td>
 
   <td>
-    <%= link_to [repair.bike.brand, repair.bike.model].compact.join(" "),
-                bike_path(repair.bike) %>
+    <% if policy(repair.bike).show? %>
+      <%= link_to [repair.bike.brand, repair.bike.model].compact.join(" "),
+                  bike_path(repair.bike) %>
+    <% else %>
+      <%= [repair.bike.brand, repair.bike.model].compact.join(" ") %>
+    <% end %>
   </td>
 
   <td>
@@ -55,8 +60,9 @@
   </td>
 
   <td>
-    <%= link_to "View",
-                repair_path(repair),
-                class: "btn btn-primary wheelhouse-btn btn-sm" %>
+    <% if policy(repair).show? %>
+      <%= link_to "View", repair_path(repair),
+                  class: "btn btn-primary wheelhouse-btn btn-sm" %>
+    <% end %>
   </td>
 </tr>

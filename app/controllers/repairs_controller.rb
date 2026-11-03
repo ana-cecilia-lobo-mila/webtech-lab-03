@@ -2,7 +2,8 @@ class RepairsController < ApplicationController
   before_action :set_repair, only: [:show, :edit, :update, :destroy, :destroy_intake_photo]
 
   def index
-    @repairs = Repair
+    authorize Repair, :index?
+    @repairs = policy_scope(Repair)
       .includes(:bike, :mechanic, taken_in_by: :mechanic)
       .with_attached_intake_photos
       .with_rich_text_diagnosis
@@ -14,6 +15,8 @@ class RepairsController < ApplicationController
 
   def new
     @repair = Repair.new(bike_id: params[:bike_id])
+    authorize @repair
+
     3.times { @repair.repair_services.build }
   end
 
@@ -22,7 +25,10 @@ class RepairsController < ApplicationController
   end
 
   def create
-    @repair = Repair.new(repair_params)
+    @repair = Repair.new
+    authorize @repair
+
+    @repair.assign_attributes(repair_params)
     @repair.taken_in_by = Current.user
 
     if @repair.save
@@ -34,8 +40,9 @@ class RepairsController < ApplicationController
   end
 
   def update
-    photos = repair_params[:intake_photos]&.reject(&:blank?)
-    attributes = repair_params.except(:intake_photos)
+    attributes = repair_params
+    photos = attributes[:intake_photos]&.reject(&:blank?)
+    attributes = attributes.except(:intake_photos)
 
     @repair.assign_attributes(attributes)
 
@@ -77,26 +84,11 @@ class RepairsController < ApplicationController
       .with_attached_intake_photos
       .with_rich_text_diagnosis
       .find(repair_id)
-  end
 
+    authorize @repair
+  end
+  
   def repair_params
-  params.expect(
-    repair: [
-      :bike_id,
-      :mechanic_id,
-      :promised_on,
-      :started_on,
-      :handed_back_at,
-      :state,
-      :diagnosis,
-      intake_photos: [],
-      repair_services_attributes: [[
-        :id,
-        :service_id,
-        :charged_price,
-        :_destroy
-      ]]
-    ]
-  )
+    params.permit(repair: policy(@repair).permitted_attributes).fetch(:repair, ActionController::Parameters.new)
   end
 end

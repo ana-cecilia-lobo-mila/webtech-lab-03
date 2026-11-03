@@ -26,11 +26,11 @@ class Repair < ApplicationRecord
 
     scope :newest_first, -> { order(created_at: :desc) }
     scope :by_promised_on, -> { order(promised_on: :asc) }
-    scope :open, -> { where(handed_back_at: nil) }
+    scope :open, -> { where.not(state: "picked_up") }
     scope :overdue, -> { open.where("promised_on < ?", Date.current) }
 
     def overdue?
-        handed_back_at.nil? && promised_on.present? && promised_on < Date.current
+        !picked_up? && promised_on.present? && promised_on < Date.current
     end
 
     def total
@@ -41,7 +41,6 @@ class Repair < ApplicationRecord
     validates :state, presence: true
 
     validate :dates_are_consistent
-    validate :handback_and_customer_response_are_consistent
     validate :state_transition_is_valid
     validate :intake_photos_have_valid_content_type
     validate :intake_photos_are_within_size_limit
@@ -51,24 +50,6 @@ class Repair < ApplicationRecord
     def dates_are_consistent
         if started_on.present? && promised_on.present? && promised_on < started_on
             errors.add(:promised_on, "cannot be earlier than the repair start date")
-        end
-
-        return if handed_back_at.blank?
-
-        if started_on.present? && handed_back_at.present? && handed_back_at.to_date < started_on
-            errors.add(:handed_back_at, "cannot be earlier than the repair start date")
-        end
-    end
-
-    def handback_and_customer_response_are_consistent
-        if handed_back_at.present? && !rejected? && !picked_up?
-            errors.add(:handed_back_at, "can only be recorded after the repair has been handed back"
-            )
-        end
-
-        if (rejected? || picked_up?) && handed_back_at.nil?
-            errors.add(:handed_back_at, "must be recorded after the repair has been handed back"
-            )
         end
     end
 

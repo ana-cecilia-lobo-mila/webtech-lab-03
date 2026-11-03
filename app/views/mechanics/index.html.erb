@@ -1,7 +1,10 @@
 <div class="container mt-5">
   <h1 class="mb-4 wheelhouse-title">Mechanics</h1>
 
-  <%= link_to "New Mechanic", new_mechanic_path,  class: "btn btn-primary wheelhouse-btn mb-3" %>
+  <% if policy(Mechanic).new? %>
+    <%= link_to "New Mechanic", new_mechanic_path,
+                class: "btn btn-primary wheelhouse-btn mb-3" %>
+  <% end %>
 
   <% if @mechanics.any? %>
     <div class="table-responsive">
@@ -20,7 +23,10 @@
                 <%= mechanic.name %>
               </td>
               <td>
-                <%= link_to "View", mechanic_path(mechanic), class: "btn btn-primary wheelhouse-btn btn-sm" %>
+                <% if policy(mechanic).show? %>
+                  <%= link_to "View", mechanic_path(mechanic),
+                              class: "btn btn-primary wheelhouse-btn btn-sm" %>
+                <% end %>
               </td>
             </tr>
           <% end %>
